@@ -4,9 +4,13 @@ pragma solidity ^0.8.20;
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+interface IMyToken is IERC20 {
+    function decimals() external view returns (uint8);
+}
+
 contract MerkleAirdrop {
     mapping(bytes32 => bool) _claimStatus;
-    IERC20 private immutable _token;
+    IMyToken private immutable _token;
     bytes32 private _merkleRoot;
     address private _owner;
     bool private active;
@@ -14,12 +18,12 @@ contract MerkleAirdrop {
     error InvalidProof();
     error AlreadyClaimed();
     error NotOwner();
-    error AirdropEnded();
+    error AirdropInactive();
 
     event AirdropClaim(address indexed account, uint256 indexed amount);
 
     constructor(address owner, address token, bytes32 merkleRoot) {
-        _token = IERC20(token);
+        _token = IMyToken(token);
         _merkleRoot = merkleRoot;
         _owner = owner;
     }
@@ -52,6 +56,7 @@ contract MerkleAirdrop {
         bytes32 leaf = getLeafHash(msg.sender, amount);
 
         //checks
+        if (!active) revert AirdropInactive();
         if (_claimStatus[leaf]) revert AlreadyClaimed();
         if (!(MerkleProof.verify(proof, _merkleRoot, leaf)))
             revert InvalidProof();
@@ -60,7 +65,7 @@ contract MerkleAirdrop {
         _claimStatus[leaf] = true;
 
         // transfer tokens
-        _token.transfer(msg.sender, amount);
+        _token.transfer(msg.sender, amount * _token.decimals());
 
         // return true
         success = true;

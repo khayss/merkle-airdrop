@@ -5,8 +5,10 @@
     "coverage": "npx hardhat coverage",
     "typechain": "npx hardhat typechain",
     "verify": "npx hardhat verify",
-    "merkle": "ts-node scripts/merkle.ts",
-    "interaction": "npx hardhat run scripts/interaction.ts --network sepolia"
+    "merkle": "npx hardhat run scripts/merkle.ts",
+    "interaction": "npx hardhat run scripts/interaction.ts --network sepolia",
+    "generate": "npx hardhat run scripts/generateEncodedList.ts",
+    "csv:random": "npx hardhat run utils/generateRandom.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",

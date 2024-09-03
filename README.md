@@ -19,14 +19,18 @@ This is a smart contract that allows for the distribution of tokens to a list of
     yarn install
 ```
 
-**Running the Script**
+**Running the Scripts**
 
 1. Create a `eligible.csv` file in the `data` directory with the list of addresses and their corresponding token amounts.
-2. Run the script
+2. Run the `generate` script to generate merkle tree data from the `eligible.csv` file. This will be saved in `eligible-packed.json` file.
+```bash
+    yarn generate
+```
+3. Run the script
 ```bash
     yarn merkle
 ```
-3. The script will generate a `merkle.json` file in the `data` directory. This file contains the Merkle root and the list of addresses and token amounts.
+1. The script will generate a `merkle.json` file in the `data` directory. This file contains the Merkle root and the list of addresses and token amounts.
 
 #### Deploying the Merkle Airdrop Contract
 **Prerequisites**
@@ -52,9 +56,13 @@ This is a smart contract that allows for the distribution of tokens to a list of
 
 **How to Generate Proofs**
 1. Update `merkle.ts` with the address and amount you wish to generate proof for.
-2. Find the proof in the `data/proofs.json`.
-3. Update the proof in the `scripts/interaction.ts` file.
-4. Run the interaction script using the command below.
+2. Run the `merkle` script using the command below.
+```bash
+   yarn merkle
+```
+3. Find the proof in the `data/proofs.json`.
+4. Update the proof in the `scripts/interaction.ts` file.
+5. Run the interaction script using the command below.
 ```bash
    yarn interaction
 ```

@@ -20,7 +20,7 @@ csvStream.end();
 
 // helper functions
 function generateRandomAddress() {
-  return "Ox" + randomBytes(20).toString("hex");
+  return "0x" + randomBytes(20).toString("hex");
 }
 
 function generateRandomAmount() {
